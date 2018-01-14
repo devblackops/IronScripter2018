@@ -2,7 +2,7 @@ function Get-MonitorDetail {
     [OutputType('PSCustomObject')]
     [cmdletbinding()]
     param(
-        [parameter(ValueFromPipeline, ValueFromPipelineByPropertyName = $true)]
+        [parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Name')]
         [string[]]$ComputerName = (hostname) # Support macOS/Linux/Windows
     )

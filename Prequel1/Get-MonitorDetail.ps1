@@ -22,7 +22,7 @@ function Get-MonitorDetail {
                 $cimParams.ComputerName = $computer
             }
 
-            Write-Verbose -Message "Quering computer [$computer]"
+            Write-Verbose -Message "Querying computer [$computer]"
             try {
                 $computerInfo = Get-CimInstance -ClassName Win32_ComputerSystem @cimParams -ErrorAction Stop
                 $serialNumber = Get-CimInstance -ClassName Win32_Bios @cimParams | Select-Object -ExpandProperty SerialNumber

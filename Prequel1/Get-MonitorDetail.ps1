@@ -4,14 +4,13 @@ function Get-MonitorDetail {
     param(
         [parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Name')]
-        [string[]]$ComputerName = (hostname), # Support macOS/Linux/Windows
+        [string[]]$ComputerName = $env:COMPUTERNAME,
 
         [System.Management.Automation.CredentialAttribute()]
         [pscredential]$Credential
     )
 
     begin {
-        $myComputerName = hostname
         $PSDefaultParameterValues = @{
             'Get-CimInstance:Verbose' = $false
         }
@@ -24,7 +23,7 @@ function Get-MonitorDetail {
             try {
                 # Support remote machines with optional credential
                 $cimParams = @{}
-                if ($computer -ne $myComputerName) {
+                if ($computer -ne $env:COMPUTERNAME) {
                     $cimParams.ComputerName = $computer
                     if ($Credential) {
                         $cimParams.CimSession = New-CimSession -ComputerName $computer -Credential $Credential

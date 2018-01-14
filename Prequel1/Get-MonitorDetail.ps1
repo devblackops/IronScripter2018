@@ -4,7 +4,10 @@ function Get-MonitorDetail {
     param(
         [parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Name')]
-        [string[]]$ComputerName = (hostname) # Support macOS/Linux/Windows
+        [string[]]$ComputerName = (hostname), # Support macOS/Linux/Windows
+
+        [System.Management.Automation.CredentialAttribute()]
+        [pscredential]$Credential
     )
 
     begin {
@@ -16,14 +19,19 @@ function Get-MonitorDetail {
 
     process {
         foreach ($computer in $ComputerName) {
-            # Support remote machines
-            $cimParams = @{}
-            if ($computer -ne $myComputerName) {
-                $cimParams.ComputerName = $computer
-            }
-
             Write-Verbose -Message "Querying computer [$computer]"
+
             try {
+                # Support remote machines with optional credential
+                $cimParams = @{}
+                if ($computer -ne $myComputerName) {
+                    $cimParams.ComputerName = $computer
+                    if ($Credential) {
+                        $cimParams.CimSession = New-CimSession -ComputerName $computer -Credential $Credential
+                    }
+                }
+
+                # Get computer and monitor info
                 $computerInfo = Get-CimInstance -ClassName Win32_ComputerSystem @cimParams -ErrorAction Stop
                 $serialNumber = Get-CimInstance -ClassName Win32_Bios @cimParams | Select-Object -ExpandProperty SerialNumber
                 $monitors = Get-CimInstance -ClassName wmiMonitorID -Namespace root\wmi @cimParams
@@ -39,6 +47,10 @@ function Get-MonitorDetail {
                 }
             } catch {
                 Write-Error -Message "Unable to connect to [$computer]"
+            } finally {
+                if ($cimParams.CimSession) {
+                    $cimParams.CimSession | Remove-CimSession
+                }
             }
         }
     }

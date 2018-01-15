@@ -1,5 +1,5 @@
 function Get-MonitorDetail {
-    [OutputType('PSCustomObject')]
+    [OutputType('MonitorDetail')]
     [cmdletbinding()]
     param(
         [parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]

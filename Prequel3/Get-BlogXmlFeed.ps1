@@ -11,16 +11,16 @@ function Get-BlogXmlFeed {
     .PARAMETER Index
     One or more index numbers of post to retrieve.
     .EXAMPLE
-    C:\> Get-XmlFeed
+    C:\> Get-BlogXmlFeed
     Returns the latest posts in the PowerShell.org XML feed.
     .EXAMPLE
-    C:\> Get-XmlFeed -Index 0
+    C:\> Get-BlogXmlFeed -Index 0
     Return the first post from the XML feed.
     .EXAMPLE
-    C:\> Get-XmlFeed -Index 0, 1 -OpenIn Browser
+    C:\> Get-BlogXmlFeed -Index 0, 1 -OpenIn Browser
     Return the first two posts from the XML deed and open in the browser.
     .EXAMPLE
-    C:\> Get-XmlFeed -OpenIn Console
+    C:\> Get-BlogXmlFeed -OpenIn Console
     Get all posts from the XML feed and display the raw HTML text of the post links.
     .LINK
     http://ironscripter.us/

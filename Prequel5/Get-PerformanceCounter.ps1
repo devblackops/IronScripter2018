@@ -27,7 +27,7 @@ function Get-PerformanceCounter {
     process {
         foreach ($Computer in $ComputerName) {
             try {
-                Write-Verbose -Message "Gathering performance counters for [$ComputerName]"
+                Write-Verbose -Message "Gathering performance counters for [$Computer]"
 
                 # Support remote machines with optional credential
                 $cimParams = @{}
